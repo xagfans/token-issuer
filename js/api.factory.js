@@ -130,13 +130,15 @@ myApp.factory('XrpApi', ['$rootScope', function($rootScope) {
         return new Promise(async (resolve, reject)=> {
           try {
             let address = this.getAddress(secret);
+            let ledger = await _remote.getLedger();
             let prepared = await _remote.prepareSettings(address, settings);
-            const {signedTransaction} = _remote.sign(prepared.txJSON, secret);
+            const {signedTransaction, id} = _remote.sign(prepared.txJSON, secret);
             let result = await _remote.submit(signedTransaction, true);
             if ("tesSUCCESS" !== result.engine_result) {
               console.warn(result);
               return reject(new Error(result.engine_result_message || result.engine_result));
             }
+            await this.commit(id, ledger.ledgerVersion, prepared.instructions.maxLedgerVersion);
             resolve(result);
           } catch (err) {
             console.info('changeSettings', err.data || err);
@@ -163,6 +165,7 @@ myApp.factory('XrpApi', ['$rootScope', function($rootScope) {
               console.warn(result);
               return reject(new Error(result.engine_result_message || result.engine_result));
             }
+            await this.commit(id, ledger.ledgerVersion, prepared.instructions.maxLedgerVersion);
             resolve(id);
           } catch (err) {
             console.info('changeTrust', err);
@@ -204,6 +207,35 @@ myApp.factory('XrpApi', ['$rootScope', function($rootScope) {
             console.error('payment', payment, err);
             reject(err);
           }
+        });
+      },
+
+      verifyTx(hash, minLedger, maxLedger, resolve, reject) {
+        const options = {
+          minLedgerVersion: minLedger,
+          maxLedgerVersion: maxLedger
+        };
+        _remote.getTransaction(hash, options).then(data => {
+          if (data.outcome.result === 'tesSUCCESS') {
+            return resolve(hash);
+          } else {
+            console.error(data);
+            return reject(data.outcome.result);
+          }
+        }).catch(err => {
+          console.warn('verify fail', err);
+          /* If transaction not in latest validated ledger, try again until max ledger hit */
+          if (err instanceof _remote.errors.PendingLedgerVersionError) {
+             setTimeout(() => this.verifyTx(hash, minLedger, maxLedger, resolve, reject), 1000);
+          } else {
+            return reject(err.message);
+          }
+        });
+      },
+
+      commit(hash, minLedger, maxLedger) {
+        return new Promise(async (resolve, reject)=>{
+          return this.verifyTx(hash, minLedger, maxLedger, resolve, reject);
         });
       }
       
