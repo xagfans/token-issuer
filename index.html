@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <title translate="title">Token</title>
+    <script src="./js/angular.min.js"></script>
+    <script src="./js/angular-translate.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/ripple-latest-min.js"></script>
+
+    
+    <script src="./js/app.js"></script>
+    <script src="./js/api.factory.js"></script>
+    <script src="./js/translate_cn.js"></script>
+    <script src="./js/translate_en.js"></script>
+    <link href="./static/app.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <ul class="memu" ng-controller="LangCtrl">
+            <li>
+                <a href="javascript:" ng-click="changeLanguage('en')"><img src="./static/english.svg" width="32px" title="English" alt="English"></a>
+            </li>
+            <li>
+                <a href="javascript:" ng-click="changeLanguage('cn')" ><img src="./static/chinese.svg" width="28px" title="中文" alt="中文"></a>
+            </li>
+        </ul>       
+
+        <div class="brand-logo"></div>
+        <div class="brand-title" translate="title">Token</div>
+        <div class="inputs" ng-controller="TokenCtrl">
+            <label translate="issuer">Issuer</label>
+            <p class="info" ng-show="issuer_address">{{issuer_address}}</p>
+            <input type="text" ng-model="issuer" placeholder="Secret key" ng-change="validateIssuer()" />
+            <p class="warn" ng-show="error_issuer">{{ error_issuer | translate }}</p>
+
+            <label translate="hotwallet">Hotwallet secret</label>
+            <p class="info" ng-show="hotwallet_address">{{hotwallet_address}}</p>
+            <input type="text" ng-model="hotwallet" placeholder="Secret key" ng-change="validateHotwallet()" />
+            <p class="warn" ng-show="error_hot">{{ error_hot | translate }}</p>
+
+            <label translate="token_code">code</label>
+            <input type="text" ng-model="code" placeholder="Doge" ng-change="validateCode()" />
+            <p class="warn" ng-show="error_code">{{ error_code | translate }}</p>
+
+            <button ng-click="issuerToken()" class="btn" translate="continue" ng-disabled="error_issuer || error_hot || error_code"></button>
+
+            <p class="msg" ng-show="msg">{{msg}}</p>
+        </div>
+        
+        <p class="info" translate="notice1"></p>
+        <p class="info" translate="notice2"></p>
+        <p class="info" translate="notice3"></p>
+    </div>
+
+</body>
+</html>
