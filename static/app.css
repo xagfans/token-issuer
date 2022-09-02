@@ -1,0 +1,129 @@
+input {
+  caret-color: red;
+}
+
+body {
+  margin: 0;
+  padding: 0;      
+  background: #ecf0f3 !important;
+}
+
+.app {
+  max-width: 800px;
+  position: relative;
+  padding: 20px;
+  margin: 15px auto 0;
+}
+
+.app .brand-logo {
+  height: 100px;
+  width: 100px;
+  background: url("./xag200.png") 0 100px/100px;
+  margin: auto;
+  border-radius: 50%;
+  box-sizing: border-box;
+  box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+}
+
+.app .brand-title {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #1DA1F2;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.app .inputs {
+  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.app label, input, button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.app label {
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+.app input::placeholder {
+  color: gray;
+}
+
+.app input {
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 50px;
+  box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+}
+
+.app .inputs > button {
+  display: block;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  margin-top: 20px;
+  background: #1DA1F2;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+.app .inputs > button[disabled] {
+  background: #ccd0d3;
+}
+
+.app .inputs > a:hover { box-shadow: none; }
+
+.app a {
+  text-decoration: none;
+}
+
+.app h1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.app .warn {      
+  font-size: 8px;
+  text-decoration: none;
+  color: black;
+  background: yellow;
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+  margin-top: 10px;
+}
+.app .msg {      
+  font-size: 8px;
+  text-decoration: none;
+  color: black;
+  background: #3cb371;
+  border-radius: 10px;
+  padding: 5px 10px 5px 10px;
+  margin-top: 20px;
+}
+.app .info {      
+  font-size: 8px;
+  text-decoration: none;
+  color: #3cb371;
+}
+
+ul li { 
+  display:inline;
+  margin-right: 5px;
+} 
